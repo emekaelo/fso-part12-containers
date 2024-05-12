@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 
 router.get('/statistics', async (req, res) => {
   const addedTodoCount = {
-    "added_todos": await getAsync('todoCount')
+    "added_todos": await getAsync('todoCount') ?? 0
   }
   res.send(addedTodoCount)
 })
