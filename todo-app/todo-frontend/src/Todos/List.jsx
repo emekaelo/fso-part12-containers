@@ -31,7 +31,7 @@ export const TodoItem = ({completeTodo, deleteTodo, todo}) => {
 
   return (
       <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '70%', margin: 'auto' }}>
-            <span>
+            <span className={'todo-text'}>
               {todo.text}
             </span>
         {todo.done ? doneInfo : notDoneInfo}
