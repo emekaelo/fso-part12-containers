@@ -21,19 +21,23 @@ services:
       - ./todo-backend:/usr/src/app
     #    ports:
     #      - 3000:3000
+    env_file:
+      - .env
     environment:
-      - REDIS_URL=redis://redis:6379
-      - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database
+      - REDIS_URL=${REDIS_URL} # redis://redis:6379
+      - MONGO_URL=${MONGO_URL} # mongodb://the_username:the_password@mongo:27017/the_database
     container_name: todo-backend-prod # This will name the container todo-backend-prod
 
   mongo:
     image: mongo
     ports:
       - 3456:27017
+    env_file:
+      - .env
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-      MONGO_INITDB_DATABASE: the_database
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     volumes:
       - ./todo-backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
       - mongo_data:/data/db

@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  app:
+    image: phonebook-fe-dev
+    build:
+      context: ./frontend # The context will pick this directory as the "build context"
+      dockerfile: dev.Dockerfile # This will simply tell which dockerfile to read
+    volumes:
+      - ./frontend:/usr/src/app # The path can be relative, so ./ is enough to say "the same location as the docker-compose.yml"
+    ports:
+      - 3000:3000
+    environment:
+      - WDS_SOCKET_HOST=127.0.0.1
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+#      - DANGEROUSLY_DISABLE_HOST_CHECK=true # Add here or in .env.development.local file in root of frontend project
+    container_name: phonebook-fe-dev # This will name the container phonebook-fe-dev
+
+  server:
+    image: phonebook-be-dev
+    build:
+      context: ./backend # The context will pick this directory as the "build context"
+      dockerfile: dev.Dockerfile # This will simply tell which dockerfile to read
+    volumes:
+      - ./backend:/usr/src/app
+#    ports:
+#      - 3001:3001
+    environment:
+      - MONGO_URL=${MONGO_URL}
+      - PORT=${PORT}
+    container_name: phonebook-be-dev # This will name the container phonebook-be-dev
+
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy-phonebook
+    depends_on:
+      - app # wait for the frontend container to be started
