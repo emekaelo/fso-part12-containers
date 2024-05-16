@@ -4,10 +4,10 @@ const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
 const Person = require("./models/person");
-const path = require('path');
+const path = require("path");
 
 // Serve the build files from a sibling folder
-const buildDir = path.join(__dirname, '..', 'client', 'build');
+const buildDir = path.join(__dirname, "..", "client", "build");
 app.use(express.static(buildDir));
 app.use(express.json());
 
@@ -57,7 +57,7 @@ let persons = [
 
 // Get home page
 app.get("/", (request, response) => {
-  response.sendFile(path.join(buildDir, 'index.html'));
+  response.sendFile(path.join(buildDir, "index.html"));
 });
 
 // Get all items
